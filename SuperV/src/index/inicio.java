@@ -513,7 +513,12 @@ BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputSt
         // TODO add your handling code here:
         
         
-        JOptionPane.showMessageDialog(null, "SuperV · https://github.com/ourenseko/superv\n- Left click to copy.\n- Right click to paste.\n\n (c) Manuel Garcia Baceiredo");
+        JOptionPane.showMessageDialog(null, "SuperV (GPLv3 License) · https://github.com/ourenseko/superv "
+                + "\n- Left click to copy."
+                + "\n- Right click to paste."
+                + "\n\n © 2025 Manuel Garcia Baceiredo (Author)"
+                + "\n © 2002 JSON.org (MIT License)"
+                + "\n © 2019 FormDev Software GmbH (Apache 2.0 License)");
         
         
     }//GEN-LAST:event_jMenuItem5ActionPerformed
