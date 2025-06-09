@@ -1,0 +1,10 @@
+{"campos": [
+    "** Bienvenido al tutorial de introducción a SuperV **",
+    "1. Haz click izquierdo en un campo con texto para copiarlo.",
+    "2. Haz click derecho en el campo vacío para pegar un texto.",
+    "3. Pulsa el botón [x] para borrar el texto de una memoria.",
+    "4. Pulsa el boton [+] para añadir más memorias.",
+    "5. Pulsa MENU para Guardar y Abrir las memorias.",
+    "",
+    "¡Listo! ya sabes usar esta práctica App."
+]}
