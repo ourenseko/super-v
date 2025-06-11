@@ -1,7 +1,7 @@
 # SuperV
 Una herramienta de portapapeles que ayuda a cumplimentar textos repetitivos.
 
-Descargar: [https://github.com/ourenseko/superv/releases/tag/v.1.0.0](https://github.com/ourenseko/superv/releases/tag/v1.1.20250611)
+Descargar: https://github.com/ourenseko/superv/releases/tag/v1.1.20250611
 
 ![preview](https://github.com/user-attachments/assets/967f376b-ae64-458d-a842-d476cd9feb9f) 
 
