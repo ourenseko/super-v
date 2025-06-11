@@ -1,52 +1,72 @@
 package index;
-
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2025 MANUEL GARCIA BACEIREDO
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Component;
-import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.Box;
+
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
 import java.io.File;
 import javax.swing.JFileChooser;
 
 import com.formdev.flatlaf.FlatLightLaf;
-
-import java.awt.HeadlessException;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+//import com.formdev.flatlaf.FlatDarkLaf;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author Manuel Garcia Baceiredo
- * @version 1.0.20250609
+ * @version 1.1.20250610
  * 
  */
 public class inicio extends javax.swing.JFrame {
 
     
+    // soluciones, encapsulamiento, etc.
+    private String rutaArchivo = "New_file.json";
     
-    String rutaArchivo = "New_file.json";
+    public void _limpiarContenedorW() {
+        jPanelContenedor.removeAll();
+    }
     
+    public void _limpiarContenedor() {
+        jPanelContenedor.removeAll();
+        jPanelContenedor.revalidate();
+        jPanelContenedor.repaint();
+    }
+    
+    public void _agregarAlContenedorW(Component comp) {
+        jPanelContenedor.add(comp);
+    }
+    
+    public void _actualizarContenedor() {
+        jPanelContenedor.revalidate();
+        jPanelContenedor.repaint();
+    }
+    
+    public void _agregarAlContenedor(Component comp) {
+        jPanelContenedor.add(comp);
+        jPanelContenedor.revalidate();
+        jPanelContenedor.repaint();
+    }
+    
+    traducciones text = new traducciones();
+    // /soluciones
     
     
     /**
@@ -60,7 +80,7 @@ public class inicio extends javax.swing.JFrame {
         jPanelContenedor.setAlignmentX(Component.LEFT_ALIGNMENT);
         jPanelContenedor.setAlignmentY(Component.TOP_ALIGNMENT); // Opcional
         
-        //lanza 8 memorias vacias
+        //lanza 7 memorias vacias al iniciar la App
         for (int i = 0; i < 7; i++) {
             jButtonAddActionPerformed(null); 
         }
@@ -98,7 +118,6 @@ public class inicio extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SuperV");
         setLocation(new java.awt.Point(69, 69));
-        setPreferredSize(new java.awt.Dimension(288, 360));
 
         jButtonAdd.setFont(new java.awt.Font("Arial Black", 1, 13)); // NOI18N
         jButtonAdd.setText("+");
@@ -121,7 +140,7 @@ public class inicio extends javax.swing.JFrame {
         );
 
         jLabel1.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel1.setText("SuperV #v.1.0.20250906");
+        jLabel1.setText("SuperV #v.1.1.20250911");
 
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 13)); // NOI18N
         jLabel2.setText("Portapapeles");
@@ -215,304 +234,41 @@ public class inicio extends javax.swing.JFrame {
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
         // TODO add your handling code here:
-        //**  add button **//
         
-        // Crear el nuevo campo de texto 
-JTextField nuevoCampo = new JTextField(20);
-
-// Responsive
-//nuevoCampo.setPreferredSize(new java.awt.Dimension(jPanelContenedor.getParent().getWidth(), 50));
-nuevoCampo.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 30));
-//nuevoCampo.setMinimumSize(new java.awt.Dimension(450, 50)); // jPanelContenedor.getParent().getWidth()-90
-nuevoCampo.setFont(new Font("Arial", Font.PLAIN, 20));
-
-//  a tamaño de letra mayor mas gordo el campo y menos inputs entran en pantalla
-
-
-
-// Al hacer clic DERECHO en el campo, copia el texto si no está vacío
-// Al hacer clic IZQUIERDO en el campo, pega el texto si está vacío
-nuevoCampo.addMouseListener(new java.awt.event.MouseAdapter() {
-    @Override
-    public void mouseClicked(java.awt.event.MouseEvent evt) {
-        // Clic izquierdo 
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            String texto = nuevoCampo.getText();
-            if (!texto.isEmpty()) {
-                java.awt.datatransfer.StringSelection seleccion = new java.awt.datatransfer.StringSelection(texto);
-                java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(seleccion, null);
-            }
-        }
-
-        // Clic derecho 
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
-            if (nuevoCampo.getText().isEmpty()) {
-                try {
-                    java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-                    String textoPegado = (String) clipboard.getData(java.awt.datatransfer.DataFlavor.stringFlavor);
-                    nuevoCampo.setText(textoPegado);
-                } catch (HeadlessException | UnsupportedFlavorException | IOException ex) {
-                    //ex.printStackTrace();
-                }
-            }
-        }
-    }
-});
-
-
-// Botón DEL que vacía el campo
-JButton botonDel = new JButton("x");
-/*
-botonDel.setPreferredSize(new java.awt.Dimension(30, 30));
-botonDel.setMaximumSize(new java.awt.Dimension(30, 30));
-botonDel.setMinimumSize(new java.awt.Dimension(30, 30));
-botonDel.setFont(new Font("Arial", Font.BOLD, 16));
-*/
-//botonDel.setBorder(new LineBorder(Color.RED, 2)); // Borde rojo de 2 píxeles
-        
-botonDel.addActionListener((java.awt.event.ActionEvent e) -> {
-    nuevoCampo.setText("");
-});
-
-// Panel que agrupa campo + botón
-JPanel fila = new JPanel();
-fila.setLayout(new BoxLayout(fila, BoxLayout.X_AXIS));
-fila.add(nuevoCampo);
-//fila.add(Box.createHorizontalStrut(10)); //aparecen flotando en el medio
-//fila.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); // no hace falta
-fila.add(botonDel);
-
-// Añadir al contenedor y refrescar la interfaz
-jPanelContenedor.add(fila);
-jPanelContenedor.revalidate();
-jPanelContenedor.repaint();
-
-        
-        
+        //AÑADIR UN CAMPO.        
+        new __elementsDynamic(this).elementNewRow("");
+        _actualizarContenedor();
         
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-
-        String directorioActual = System.getProperty("user.dir");
-        JFileChooser fileChooser = new JFileChooser(directorioActual);
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos de texto (*.txt)", "txt"));
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos JSON (*.json)", "json"));
-        int resultado = fileChooser.showSaveDialog(null);
-
-        if (resultado == JFileChooser.APPROVE_OPTION) {
-            File archivoGuardar = fileChooser.getSelectedFile();
-            //System.out.println("Guardar en: " + archivoGuardar.getAbsolutePath());
-            
-            // aquí puedes guardar en archivoGuardar
-            //public void guardarCamposEnJSON(String rutaArchivo) {
-             JSONArray jsonArray = new JSONArray();
-
-            for (int i = 0; i < jPanelContenedor.getComponentCount(); i++) {
-                JPanel fila = (JPanel) jPanelContenedor.getComponent(i);
-                JTextField campo = (JTextField) fila.getComponent(0); // el primer componente es JTextField
-                String texto = campo.getText();
-                jsonArray.put(texto);
-            }
-
-            JSONObject json = new JSONObject();
-            json.put("campos", jsonArray);
-
-            try (FileWriter file = new FileWriter(archivoGuardar)) {
-                file.write(json.toString(4));  // indentación para legibilidad
-                file.flush();
-                
-                
-                //Actualizamos donde se guardan los cambios
-                rutaArchivo = archivoGuardar.getAbsolutePath(); 
-                
-                JOptionPane.showMessageDialog(null, "Guardado con exito.\nRuta: "+rutaArchivo);
-                
-            } catch (Exception e) {
-                //e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Fatal error.");
-            }
-            
-        }
-
         
-        
+        //GUARDAR COMO
+        new __saveElementsJson(this).saveAs();
         
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
         
+        //GUARDAR
+        new __saveElementsJson(this).save(getRutaArchivo());
         
-        
-        /** ESTO DEBERIA SABER EN QUE ARCHIVO ESTAMOS TRABAJANDO
-         *  MEMORIZAR LA RUTA DEL ULTIMO FILE GUARDADO O CARGADO
-         *  SINO QUE PIDA CREAR UNO NUEVO.
-         **/
-        
-        
-     
-        
-//public void guardarCamposEnJSON(String rutaArchivo) {
-
-         JSONArray jsonArray = new JSONArray();
-
-    for (int i = 0; i < jPanelContenedor.getComponentCount(); i++) {
-        JPanel fila = (JPanel) jPanelContenedor.getComponent(i);
-        JTextField campo = (JTextField) fila.getComponent(0); // el primer componente es JTextField
-        String texto = campo.getText();
-        jsonArray.put(texto);
-    }
-
-    JSONObject json = new JSONObject();
-    json.put("campos", jsonArray);
-
-    try (FileWriter file = new FileWriter(rutaArchivo)) {
-        file.write(json.toString(4));  // indentación para legibilidad
-        file.flush();
-        //JOptionPane.showMessageDialog(null, "Los cambios han sido guardados con exito.");
-    } catch (Exception e) {
-        //e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Fatal error.");
-    }
-        
-        
-        
-        
-
-     
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
         
-        //String rutaArchivo = "datos.json"; //Esto es el por defecto si se pulsa Cancelar en la carga, pero es una chapuza.
+        //ABRIR ARCHIVO
+        new __loadElementsJson(this).open();
         
-        String directorioActual = System.getProperty("user.dir");
-        JFileChooser fileChooser = new JFileChooser(directorioActual);
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos de texto (*.txt)", "txt"));
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos JSON (*.json)", "json"));
-        int resultado = fileChooser.showOpenDialog(null); // null = ventana padre, o pon tu JFrame
-
-        if (resultado == JFileChooser.APPROVE_OPTION) {
-            File archivoSeleccionado = fileChooser.getSelectedFile();
-            //System.out.println("Archivo seleccionado: " + archivoSeleccionado.getAbsolutePath());
-            //String rutaArchivo = archivoSeleccionado.getAbsolutePath();
-            // aquí puedes usar archivoSeleccionado para abrir o leer
-        
-/***** 
- * ARREGLAR ESTO!!!!!
- * PONER EN UNA CLASE PARA NO TENER QUE REPETIRLO AQUI!!!
- * PROBLEMAS CON UTF8, SUSTITUIR CODIGO!!
-plain: CODIGO MALO
-BufferedReader reader = new BufferedReader(new FileReader(rutaArchivo));
-* lo que tengo: new BufferedReader(new FileReader(archivoSeleccionado.getAbsolutePath()))
-* 
-utf8: CODIGO BUENO
-BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(rutaArchivo), StandardCharsets.UTF_8));
-
- * 
- * here. *******************/
-            //public void cargarCamposDesdeJSON(String rutaArchivo) {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(archivoSeleccionado.getAbsolutePath()), StandardCharsets.UTF_8))) {
-                StringBuilder sb = new StringBuilder();
-                String linea;
-                while ((linea = reader.readLine()) != null) {
-                    sb.append(linea);
-                }
-
-                JSONObject json = new JSONObject(sb.toString());
-                JSONArray jsonArray = json.getJSONArray("campos");
-
-                // Primero, limpiar el panel para cargar los campos
-                jPanelContenedor.removeAll();
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    String texto = jsonArray.getString(i);
-
-                    // Reutiliza tu código para crear un nuevo campo
-                    JTextField nuevoCampo = new JTextField(30);
-                    nuevoCampo.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 25));
-                    nuevoCampo.setFont(new Font("Arial", Font.PLAIN, 20));
-                    nuevoCampo.setText(texto);
-                    nuevoCampo.setCaretPosition(0);
-                    // Repite el código para el listener de copiar/pegar y el botón 'x'
-                    nuevoCampo.addMouseListener(new java.awt.event.MouseAdapter() {
-                        @Override
-                        public void mouseClicked(java.awt.event.MouseEvent evt) {
-                            if (evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-                                String t = nuevoCampo.getText();
-                                if (!t.isEmpty()) {
-                                    java.awt.datatransfer.StringSelection seleccion = new java.awt.datatransfer.StringSelection(t);
-                                    java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(seleccion, null);
-                                }
-                            }
-                            if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
-                                if (nuevoCampo.getText().isEmpty()) {
-                                    try {
-                                        java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-                                        String textoPegado = (String) clipboard.getData(java.awt.datatransfer.DataFlavor.stringFlavor);
-                                        nuevoCampo.setText(textoPegado);
-                                    } catch (HeadlessException | UnsupportedFlavorException | IOException ex) {
-                                        //ex.printStackTrace();
-                                        System.err.println("Error ");
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                    JButton botonDel = new JButton("x");
-                    /** SI APLICAMOS ESTILOS AQUI SOLO SE APLICAN AL CARGAR
-                    botonDel.setPreferredSize(new java.awt.Dimension(60, 50));
-                    botonDel.setMaximumSize(new java.awt.Dimension(60, 50));
-                    botonDel.setMinimumSize(new java.awt.Dimension(60, 50));
-                    botonDel.setFont(new Font("Arial", Font.BOLD, 16));
-                    botonDel.setBorder(new LineBorder(Color.RED, 2)); 
-                    **/
-                    botonDel.addActionListener((java.awt.event.ActionEvent e) -> {
-                        nuevoCampo.setText("");
-                    });
-
-                    JPanel fila = new JPanel();
-                    fila.setLayout(new BoxLayout(fila, BoxLayout.X_AXIS));
-                    fila.add(nuevoCampo);
-                    //fila.add(Box.createHorizontalStrut(10));
-                    fila.add(botonDel);
-
-                    jPanelContenedor.add(fila);
-                }
-                jPanelContenedor.revalidate();
-                jPanelContenedor.repaint();
-
-                
-                //Actualizamos donde se guardan los cambios
-                rutaArchivo = archivoSeleccionado.getAbsolutePath();
-                
-            } catch (Exception e) {
-               //e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Fatal error.");
-            }        
-     
-    
-            /**
-         * ATENCION
-         * ESTO DEBE IR EN DIFERENTE CLASES DE JAVA 
-         * PARA QUE NO SEA UN MALDITO CAOS.
-         **/
-        }
-
-        
-       
-        
-    
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
         
-        
+        //ABOUT
         JOptionPane.showMessageDialog(null, "SuperV (GPLv3 License) · https://github.com/ourenseko/superv "
                 + "\n- Left click to copy."
                 + "\n- Right click to paste."
@@ -525,36 +281,34 @@ BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputSt
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
+        //NUEVO
         
-        //Guarda
         int x = JOptionPane.showConfirmDialog(null, "Save changes?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION);
         switch (x) {
-            case JOptionPane.YES_OPTION:
-                //System.out.println("Changes saved\nDir: "+rutaArchivo);
-                jMenuItem1ActionPerformed(evt);
+            case JOptionPane.YES_OPTION: //Guardamos
+                //Guardamos
+                new __saveElementsJson(this).save(getRutaArchivo());
+                System.out.println("Changes saved.\n>>>"+getRutaArchivo());
+                //Borramos todo lo escrito
+                new __elementsDynamic(this).elementsDrop();
+                setRutaArchivo("New_File.json");
+                System.out.println(">>>"+getRutaArchivo());
                 break;
-            case JOptionPane.NO_OPTION:
-                //System.out.println("Changes not saved.");
                 
-                //limpiamos esto para que no haya sobreescrituras en el anterior archivo
-                rutaArchivo = "New_file.json";
-                //Borra todo
-                //public void vaciarTodosLosCampos() {
-                for (Component comp : jPanelContenedor.getComponents()) {
-                    if (comp instanceof JPanel) {
-                        JPanel fila = (JPanel) comp;
-                        for (Component subcomp : fila.getComponents()) {
-                            if (subcomp instanceof JTextField) {
-                                JTextField campo = (JTextField) subcomp;
-                                campo.setText("");
-                            }
-                        }
-                    }
-                }   break;
-        //System.out.println("Operation canceled.");
+            case JOptionPane.NO_OPTION: //No guardamos 
+                //Borramos todo lo escrito
+                new __elementsDynamic(this).elementsDrop();
+                setRutaArchivo("New_File.json");
+                System.out.println("Changes not saved.\n"
+                        + ">>>"+getRutaArchivo());
+                break;
+                
             case JOptionPane.CANCEL_OPTION:
             case JOptionPane.CLOSED_OPTION:
+                System.out.println("Operation canceled.\n"
+                        + ">>>"+getRutaArchivo());
                 break;
+                
             default:
                 break;
         }
@@ -595,14 +349,30 @@ BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputSt
         //</editor-fold>
         
         try {
-            // Usar el tema FlatLaf claro
+            // Usar el tema FlatLaf claro, si hay un error elegir Nimbus. 
+            // No sirve este truco, si no está la librería el programa crashea al arrancar y no carga LaF Nimbus.
             javax.swing.UIManager.setLookAndFeel(new FlatLightLaf()); //FlatLightLaf ó FlatDarkLaf
 
         } catch (UnsupportedLookAndFeelException e) {
-            System.err.println("Error @FlatLaf");
-            
+            System.err.println("LaF FlatLaf desing error.");
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+                } catch (ClassNotFoundException |
+                        InstantiationException | 
+                        IllegalAccessException | 
+                        javax.swing.UnsupportedLookAndFeelException ex) {
+                    java.util.logging.Logger.getLogger(inicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
         }
-
+        
+        traducciones t = new traducciones();
+        t.setLanguageBySystem();
+    
         // Cargar tu ventana;  Con lambda (más moderna y compacta)
         javax.swing.SwingUtilities.invokeLater(() -> {
             new inicio().setVisible(true);
@@ -636,4 +406,24 @@ BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputSt
     private javax.swing.JPanel jPanelContenedor;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    public String getRutaArchivo() {
+        return rutaArchivo;
+    }
+
+    public void setRutaArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
+    }
+
+    public javax.swing.JPanel getjPanelContenedor() {
+        return jPanelContenedor;
+    }
+
+    public void setjPanelContenedor(javax.swing.JPanel jPanelContenedor) {
+        this.jPanelContenedor = jPanelContenedor;
+    }
+    
+    
+    
+    
 }
